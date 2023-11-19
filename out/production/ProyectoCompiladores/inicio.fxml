@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="675.0" prefWidth="1042.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="co.edu.uniquindio.compiladores.controladores.InicioController">
+    <children>
+        <Button fx:id="botonCambiar" layoutX="23.0" layoutY="52.0" mnemonicParsing="false" onAction="#analizarCodigo" text="Analizar Código" />
+        <TextArea fx:id="codigoFuente" layoutX="23.0" layoutY="94.0" prefHeight="260.0" prefWidth="995.0" />
+        <TabPane layoutX="23.0" layoutY="381.0" prefHeight="260.0" prefWidth="995.0">
+            <tabs>
+                <Tab text="Analizador Léxico">
+                    <TableView fx:id="tablaTokens" prefHeight="231.0" prefWidth="993.0">
+                        <columns>
+                            <TableColumn fx:id="colLexema" prefWidth="190.0" text="Parametro" />
+                            <TableColumn fx:id="colCategoria" prefWidth="208.0" text="Token" />
+                            <TableColumn fx:id="colFila" prefWidth="63.0" text="Fila" />
+                            <TableColumn fx:id="colColumna" minWidth="0.0" prefWidth="78.0" text="Columna" />
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                        </columnResizePolicy>
+                    </TableView>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </children>
+</AnchorPane>

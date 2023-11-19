@@ -1,0 +1,57 @@
+Unidad de Compilación
+
+<UnidadCompilacion>::= Clase <ListaFuncionesVariablesGlobales> Fin
+
+< ListaFuncionesVariablesGlobales>::= <Funcion> [<ListaFuncionesVariablesGlobales>]
+
+<Funcion>::= Metodo nombre":"[<ListaParametros>]":"<TipoRetorno><BloqueSentencias>
+
+<ListaParametros>::= <Parametro>[<ListaParametros>]
+
+<Parametro>::= <TipoDato>IdentificadorDeVariable
+
+<TipoDato>::= Entero|Real|Cadena|Caracter
+
+<ListaSentencias>::= <Sentencia>[<ListaSentencias>]
+
+<Sentencia>::= <CicloMientras> | <DecisionSimple> | <Asignacion> | <DeclaracionVariable> | <Retorno> | <Incremento> | <Decremento> | <InvocacionFuncion> | <Imprimir> | <Leer>
+
+<DecisionSimple>::= Si “{“ <ExpresionLogica>”}” “{“[<ListaSentencias>]”}” [Sino “{“[<ListaSentencias>]”}”]
+
+<Asignacion>::=<IdentificadorDeVariable>OpAsignacion<Expresion>| <IdentificadorDeVariable>OpAsignacion<InvocacionFuncion>
+
+<CicloMientras>::= Mientras  <ExpresionLogica> : {<ListaSentencias>}
+
+<Expresion>::=<ExpresionAritmetica>|<ExpresionRelacional>|<ExpresionLogica>|<ExpresionCadena>
+
+
+<ExpAritmetica> ::= "("<ExpAritmetica>")" [operadorAritmetico <ExpAritmetica>] |<ValorNumerico> [operadorAritmetico <ExpAritmetica>]
+
+<ValorNumerico>::= [<signo>]entero | [<signo>]double | [<signo>]identificadorDeVariable
+
+
+<ExpresionLogica>::=<ExpresionLogica>LogicoBin<ExpresionLogica>|Negacion<ExpresionLogica>|<valorLogico>
+
+<ExpresionLogica>::=Negacion<ExpresionLogica>[LogicoBin<ExpresionLogica>]|<ExpresionRelacional>[LogicoBin<ExpresionLogica>]
+
+<DeclaracionVariable>::= <VariableMutable>|<VariableInmutable>
+
+<VariableInmutable>::= Inmutable <tipoDato> Identificador
+
+<Impresion>::=Imprimir [<ListaAgumentos>]
+
+<InvocacionFuncion>::= nombre":"<ListaArgumentos>":"
+
+<Argumentos>::=<Argumento>[":"<listaArgumentos>]
+
+<Argumento>::=<IdentificadorVariable>|<Expresion>
+
+<ExpresionRelacional>::=":"<ExpresionAritmetica>OperadorRelacional<ExpresionAritmetica>|<ValorLogico>
+
+<valorLogico>::= Uno|Cero
+
+<Arreglo>::=<TipoDato> indentificadorArreglo"("<listaDatos>")"
+
+
+
+
