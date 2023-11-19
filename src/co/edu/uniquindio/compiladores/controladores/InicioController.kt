@@ -3,9 +3,9 @@ package co.edu.uniquindio.compiladores.controladores
 import co.edu.uniquindio.compiladores.lexico.AnalizadorLexico
 import co.edu.uniquindio.compiladores.lexico.Token
 import co.edu.uniquindio.compiladores.lexico.Error
-import co.edu.uniquindio.compiladores.semantica.AnalizadorSemantico
+/*import co.edu.uniquindio.compiladores.semantica.AnalizadorSemantico
 import co.edu.uniquindio.compiladores.sintaxis.AnalizadorSintactico
-import co.edu.uniquindio.compiladores.sintaxis.UnidadDeCompilacion
+import co.edu.uniquindio.compiladores.sintaxis.UnidadDeCompilacion*/
 import javafx.collections.FXCollections
 import javafx.event.ActionEvent
 import javafx.fxml.FXML
@@ -37,10 +37,10 @@ class InicioController : Initializable {
     @FXML lateinit var colFila: TableColumn<Token, Int>
     @FXML lateinit var colColumna: TableColumn<Token, Int>
     @FXML lateinit var arbolVisual: TreeView<String>
-    private var uc:UnidadDeCompilacion? = null
+    /*private var uc:UnidadDeCompilacion? = null*/
     private var lexico:AnalizadorLexico? = null
-    private var sintaxis:AnalizadorSintactico? = null
-    private var semantica:AnalizadorSemantico? = null
+    /*private var sintaxis:AnalizadorSintactico? = null
+    private var semantica:AnalizadorSemantico? = null*/
 
     override fun initialize(location: URL?, resources: ResourceBundle?) {
         colLexema.cellValueFactory = PropertyValueFactory("parametro")
@@ -92,12 +92,12 @@ class InicioController : Initializable {
         }
     }
 
-    @FXML
+    /*@FXML
     fun traducirCodigo(e:ActionEvent){
 
         //Porción de código para ejecutar traducciones de prueba sin tener en cuenta errores léxicos, sintácticos o semánticos.
-/*        val codigo = uc!!.getJavaCode()
-        print(codigo)*/
+*//*        val codigo = uc!!.getJavaCode()
+        print(codigo)*//*
 
         var alerta = Alert(Alert.AlertType.NONE)
         if (uc != null && lexico!!.listaErrores.isEmpty() && sintaxis!!.listaErrores.isEmpty() && semantica!!.listaErrores.isEmpty()) {
@@ -121,6 +121,6 @@ class InicioController : Initializable {
             alerta.contentText = "El código no se puede traducir porque tiene errores."
             alerta.show()
         }
-    }
+    }*/
 }
 
