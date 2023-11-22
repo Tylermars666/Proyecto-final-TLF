@@ -277,7 +277,7 @@ class AnalizadorLexico(var codigoFuente: String) {
                 obtenerSiguienteCaracter()
                 almacenarToken(
                     parametro,
-                    Categoria.OPERADOR_DE_ASIGNACION, filaInicial, columnaInicial
+                    Categoria.OPERADOR_LOGICO, filaInicial, columnaInicial
                 )
                 return true
             }
