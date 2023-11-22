@@ -8,7 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/src/co/edu/uniquindio/compiladores/semantica" />
       <excludeFolder url="file://$MODULE_DIR$/src/co/edu/uniquindio/compiladores/sintaxis" />
     </content>
-    <orderEntry type="jdk" jdkName="corretto-1.8" jdkType="JavaSDK" />
+    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>

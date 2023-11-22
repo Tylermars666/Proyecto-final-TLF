@@ -40,7 +40,7 @@ class AnalizadorLexico(var codigoFuente: String) {
     /**
      * Método que guarda los tokens que se catalogan como error en una lista.
      */
-    fun reportarError(error: String) =
+   fun reportarError(error: String) =
         listaErrores.add(Error(error, filaActual, columnaActual))
 
     /**
@@ -68,12 +68,9 @@ class AnalizadorLexico(var codigoFuente: String) {
             if (esNumero()) continue
             if (esIdentificadorPalabraReservada()) continue
             if (esOperadorLogicoRelacional()) continue
-            if (esOperadorAritIncreDecreAsig()) continue
+            if (esOperadorAritAsig()) continue
             if (esCadenaCaracteres()) continue
-            if (esComentarioDeBloque()) continue
-            if (esComentarioDeLinea()) continue
             if (esFinSentencia()) continue
-            if (esDosPuntos()) continue
             if (esLlave()) continue
             if (esParentesis()) continue
             if (esSeparador()) continue
@@ -149,8 +146,10 @@ class AnalizadorLexico(var codigoFuente: String) {
     }
 
     /**
-     * Método que valida si una palabra es un identificador ($u_uL)($u_uLuD)* o palabra reservada del lenguaje
-     * (Entero)u(Real)u(Para)u(Mientras)u(Private)u(Public)u(Paquete)u(Importar)u(Clase)u(Return)u(Break).
+     * Método que valida si una palabra es un identificador  [(A-Z)(a-z)_,$][(A-Z)(a-z)(0-9)_,$]* o palabra reservada del lenguaje
+     * (for)u(while)u(do)u(break)u(continue)u(if)u(else)u(elseIf)u(switch)u(case)u(default)u(class)u(constructor)u(public)u(private)u
+     * (protected)u(static)u(extends)u(super)u(abstract)u(implements).
+     * .
      * @return true or false
      */
     fun esIdentificadorPalabraReservada(): Boolean {
@@ -197,8 +196,9 @@ class AnalizadorLexico(var codigoFuente: String) {
     }
 
     /**
-     * Método que valida si una palabra es un operador lógico (!)u(&&)u(||)
-     * o relacional (!=)u(==)u(<)u(>)u(<=)u(>=).
+     * Método que valida si una palabra es un operador lógico (&&)u(||)u(!)
+     * Relacional (<)u(>)u(<=)u(>=)u(==)u(!=).
+     * Asignacion (=)u(+=)u(-=)u(*=)u(/=)u(%=)u(&=)u(^=)u(<<=)u(>>=)u(>>>=)
      * @return true or false
      */
     fun esOperadorLogicoRelacional(): Boolean {
@@ -272,18 +272,14 @@ class AnalizadorLexico(var codigoFuente: String) {
             val posicionInicial = posicionActual
             parametro += caracterActual
             obtenerSiguienteCaracter()
-            if (caracterActual == '&') {
+            if (caracterActual == '&' || caracterActual == '=') {
                 parametro += caracterActual
                 obtenerSiguienteCaracter()
                 almacenarToken(
                     parametro,
-                    Categoria.OPERADOR_BINARIO, filaInicial, columnaInicial
+                    Categoria.OPERADOR_DE_ASIGNACION, filaInicial, columnaInicial
                 )
                 return true
-            } else {
-                reportarError("Falta el segundo '&' para completar el operador binario (and).")
-                hacerBT(posicionInicial, filaInicial, columnaInicial)
-                return false
             }
         }
         if (caracterActual == '|') {
@@ -298,7 +294,7 @@ class AnalizadorLexico(var codigoFuente: String) {
                 obtenerSiguienteCaracter()
                 almacenarToken(
                     parametro,
-                    Categoria.OPERADOR_BINARIO, filaInicial, columnaInicial
+                    Categoria.OPERADOR_LOGICO, filaInicial, columnaInicial
                 )
                 return true
             } else {
@@ -313,11 +309,11 @@ class AnalizadorLexico(var codigoFuente: String) {
 
     /**
      * Método que valida si una palabra es un operador aritmético (+)u(-)u(*)u(/)u(%),
-     * de incremento (++), decremento (--) o de asignación (=)u(+=)u(-=)u(*=)u(/=)u(%=).
+     * o de asignación (=)u(+=)u(-=)u(*=)u(/=)u(%=).
      * @return true or false
      */
-    fun esOperadorAritIncreDecreAsig(): Boolean {
-        if (caracterActual == '*' || caracterActual == '/' || caracterActual == '%') {
+    fun esOperadorAritAsig(): Boolean {
+        if ( caracterActual == '*' || caracterActual == '/' || caracterActual == '%') {
             var parametro = ""
             val filaInicial = filaActual
             val columnaInicial = columnaActual
@@ -353,15 +349,7 @@ class AnalizadorLexico(var codigoFuente: String) {
                 )
                 return true
             }
-            if (caracterActual == '+') {
-                parametro += caracterActual
-                obtenerSiguienteCaracter()
-                almacenarToken(
-                    parametro,
-                    Categoria.OPERADOR_DE_INCREMENTO, filaInicial, columnaInicial
-                )
-                return true
-            }
+
             almacenarToken(
                 parametro,
                 Categoria.OPERADOR_ARITMETICO, filaInicial, columnaInicial
@@ -383,15 +371,7 @@ class AnalizadorLexico(var codigoFuente: String) {
                 )
                 return true
             }
-            if (caracterActual == '-') {
-                parametro += caracterActual
-                obtenerSiguienteCaracter()
-                almacenarToken(
-                    parametro,
-                    Categoria.OPERADOR_DE_DECREMENTO, filaInicial, columnaInicial
-                )
-                return true
-            }
+
             almacenarToken(
                 parametro,
                 Categoria.OPERADOR_ARITMETICO, filaInicial, columnaInicial
@@ -428,7 +408,7 @@ class AnalizadorLexico(var codigoFuente: String) {
                 obtenerSiguienteCaracter()
                 if (caracterActual == finCodigo) {
                     if (caracterActual != '\"') {
-                        reportarError("Falta cerrar cadena de caracteres.")
+
                         almacenarToken(
                             parametro,
                             Categoria.CADENA_CARACTERES_SIN_CERRAR, filaInicial, columnaInicial
@@ -460,7 +440,7 @@ class AnalizadorLexico(var codigoFuente: String) {
             obtenerSiguienteCaracter()
             almacenarToken(
                 parametro,
-                Categoria.PARENTESIS_APERTURA, filaInicial, columnaInicial
+                Categoria.SIMBOLO_APERTURA, filaInicial, columnaInicial
             )
             return true
         }
@@ -472,7 +452,7 @@ class AnalizadorLexico(var codigoFuente: String) {
             obtenerSiguienteCaracter()
             almacenarToken(
                 parametro,
-                Categoria.PARENTESIS_CIERRE, filaInicial, columnaInicial
+                Categoria.SIMBOLO_CIERRE, filaInicial, columnaInicial
             )
             return true
         }
@@ -492,7 +472,7 @@ class AnalizadorLexico(var codigoFuente: String) {
             obtenerSiguienteCaracter()
             almacenarToken(
                 parametro,
-                Categoria.LLAVE_APERTURA, filaInicial, columnaInicial
+                Categoria.SIMBOLO_APERTURA, filaInicial, columnaInicial
             )
             return true
         }
@@ -504,7 +484,7 @@ class AnalizadorLexico(var codigoFuente: String) {
             obtenerSiguienteCaracter()
             almacenarToken(
                 parametro,
-                Categoria.LLAVE_CIERRE, filaInicial, columnaInicial
+                Categoria.SIMBOLO_CIERRE, filaInicial, columnaInicial
             )
             return true
         }
@@ -524,7 +504,7 @@ class AnalizadorLexico(var codigoFuente: String) {
             obtenerSiguienteCaracter()
             almacenarToken(
                 parametro,
-                Categoria.CORCHETE_APERTURA, filaInicial, columnaInicial
+                Categoria.SIMBOLO_APERTURA, filaInicial, columnaInicial
             )
             return true
         }
@@ -536,7 +516,7 @@ class AnalizadorLexico(var codigoFuente: String) {
             obtenerSiguienteCaracter()
             almacenarToken(
                 parametro,
-                Categoria.CORCHETE_CIERRE, filaInicial, columnaInicial
+                Categoria.SIMBOLO_CIERRE, filaInicial, columnaInicial
             )
             return true
         }
@@ -544,7 +524,7 @@ class AnalizadorLexico(var codigoFuente: String) {
     }
 
     /**
-     * Método que valida si una palabra es un fin de sentencia (;).
+     * Método que valida si una palabra es un terminal fin de sentencia (;).
      * @return true or false
      */
     fun esFinSentencia(): Boolean {
@@ -584,11 +564,11 @@ class AnalizadorLexico(var codigoFuente: String) {
     }
 
     /**
-     * Método que valida si una palabra es un separador (,).
+     * Método que valida si una palabra es un separador de sentencias (,).
      * @return true or false
      */
     fun esSeparador(): Boolean {
-        if (caracterActual == ',') {
+        if (caracterActual == ',' || caracterActual == '.') {
             var parametro = ""
             val filaInicial = filaActual
             val columnaInicial = columnaActual
@@ -603,67 +583,11 @@ class AnalizadorLexico(var codigoFuente: String) {
         return false
     }
 
-    /**
-     * Método que valida si una palabra (línea de código) es un comentario S={Ascii}, (#)(S)*(\n).
-     * @return true or false
-     */
-    fun esComentarioDeLinea(): Boolean {
-        if (caracterActual == '#') {
-            var parametro = ""
-            val filaInicial = filaActual
-            val columnaInicial = columnaActual
-            parametro += caracterActual
-            obtenerSiguienteCaracter()
-            while (filaInicial == filaActual) {
-                parametro += caracterActual
-                obtenerSiguienteCaracter()
-                if (caracterActual == finCodigo) break
-            }
-            almacenarToken(
-                parametro,
-                Categoria.COMENTARIO_DE_LINEA, filaInicial, columnaInicial
-            )
-            return true
-        }
-        return false
-    }
-
-    fun esComentarioDeBloque(): Boolean {
-        if (caracterActual == '@') {
-            var parametro = ""
-            val filaInicial = filaActual
-            val columnaInicial = columnaActual
-            parametro += caracterActual
-            obtenerSiguienteCaracter()
-            while (caracterActual != '@') {
-                parametro += caracterActual
-                obtenerSiguienteCaracter()
-                if (caracterActual == finCodigo) {
-                    if (caracterActual != '@') {
-                        reportarError("Falta cerrar comentario de bloque.")
-                        almacenarToken(
-                            parametro,
-                            Categoria.COMENTARIO_DE_BLOQUE_SIN_CERRAR, filaInicial, columnaInicial
-                        )
-                        return true
-                    }
-                }
-            }
-            parametro += caracterActual
-            obtenerSiguienteCaracter()
-            almacenarToken(
-                parametro,
-                Categoria.COMENTARIO_DE_BLOQUE, filaInicial, columnaInicial
-            )
-            return true
-        }
-        return false
-    }
 
     /**
      * Método que compara si una palabra que entra como parámetro es una de las palabras reservadas del lenguaje,
-     * la palabra debe coincidir exactamente en cuanto a mayúsculas y minúsculas ("Entero", "Real",
-     * "Para", "Mientras", "Privado", Returna", "Break").
+     * la palabra debe coincidir exactamente en cuanto a mayúsculas y minúsculas ( for  while  do  break  continue
+     * if else else+if switch case default class constructor public private protected static extends super abstract implements ).
      * @param String cadena
      * @return boolean true or false
      */
@@ -675,7 +599,7 @@ class AnalizadorLexico(var codigoFuente: String) {
         else if (cadena == "continue") true
         else if (cadena == "if") true
         else if (cadena == "else") true
-        else if (cadena == "elseif") true
+        else if (cadena == "elseIf") true
         else if (cadena == "switch") true
         else if (cadena == "case") true
         else if (cadena == "default") true

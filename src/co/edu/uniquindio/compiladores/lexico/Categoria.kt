@@ -2,6 +2,7 @@ package co.edu.uniquindio.compiladores.lexico
 
 enum class Categoria {
 
+        //valor de asignación
         ENTERO,
         REAL,
         CARACTER,
@@ -12,21 +13,13 @@ enum class Categoria {
         PALABRA_RESERVADA,
         OPERADOR_RELACIONAL,
         OPERADOR_LOGICO,
-        OPERADOR_BINARIO,
         OPERADOR_DE_ASIGNACION,
-        OPERADOR_DE_INCREMENTO,
-        OPERADOR_DE_DECREMENTO,
-        PARENTESIS_APERTURA,
-        PARENTESIS_CIERRE,
-        LLAVE_APERTURA,
-        LLAVE_CIERRE,
-        CORCHETE_APERTURA,
-        CORCHETE_CIERRE,
+        SIMBOLO_APERTURA,
+        SIMBOLO_CIERRE,
         TERMINAL_FIN_SENTENCIA,
         DOS_PUNTOS,
         SEPARADOR,
         COMENTARIO_DE_LINEA,
         COMENTARIO_DE_BLOQUE,
-        COMENTARIO_DE_BLOQUE_SIN_CERRAR,
         DESCONOCIDO
 }
